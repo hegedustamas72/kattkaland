@@ -1,7 +1,76 @@
-<div id="uzenet" style="font-size:26px; text-align:center; margin-top:60px;"></div>
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Napi Pozitív Üzenet</title>
+<style>
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card {
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  max-width: 340px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  animation: fadeIn 0.8s ease;
+}
+
+.tag {
+  font-size: 12px;
+  opacity: 0.6;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.message {
+  font-size: 22px;
+  line-height: 1.4;
+  margin: 20px 0;
+}
+
+.btn {
+  background: #667eea;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.btn:active {
+  transform: scale(0.96);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div id="kategoria" class="tag"></div>
+  <div id="uzenet" class="message"></div>
+  <button onclick="ujUzenet()" class="btn">Új üzenet</button>
+</div>
 
 <script>
-// napi seed
+// ===== NAPI SEED =====
 let baseSeed = new Date().toDateString();
 
 function hashCode(str) {
@@ -17,75 +86,65 @@ function pick(arr, seedOffset = 0) {
   return arr[Math.abs(h) % arr.length];
 }
 
-// ===== motivációs =====
+// ===== STÍLUSOK =====
+// Motiváció, Spirituális, Vicces
 const motivacios = {
-  kezdes: ["Ma", "Ez a nap", "Most", "Ma végre", "Ne feledd", "Ezen a napon"],
+  kezdes: [
+    "Ma", "Ez a nap", "Most", "Ma végre", "Ne feledd", "Ezen a napon",
+    "Ne hagyd ki", "Ez a pillanat", "Merj nagyot álmodni", "Fókuszálj ma"
+  ],
   kozep: [
-    "előre mozdít az utadon",
-    "erősebbé tesz",
-    "közelebb visz a célodhoz",
-    "segít kitartani",
-    "egy új lehetőség nyílik",
-    "megerősít a hitben"
+    "előre mozdít az utadon", "erősebbé tesz", "közelebb visz a célodhoz",
+    "segít kitartani", "egy új lehetőség nyílik", "megerősít a hitben",
+    "növeli az energiádat", "hozzásegít a sikerhez", "bátorít a változásra", "megmutatja az erődet"
   ],
   vege: [
-    "ha nem adod fel 💪",
-    "ha teszel érte 🔥",
-    "ha hiszel magadban 🙌",
-    "ha folytatod a munkát 🚀",
-    "ha bízik magadban ✨",
-    "ha nyitott maradsz 🏆"
+    "ha nem adod fel 💪", "ha teszel érte 🔥", "ha hiszel magadban 🙌",
+    "ha folytatod a munkát 🚀", "ha bízik magadban ✨", "ha nyitott maradsz 🏆",
+    "ha elindulsz ma is", "ha kitartasz a célod mellett", "ha megteszed az első lépést", "ha hiszel a sikeredben"
   ]
 };
 
-// ===== spirituális =====
 const spiritualis = {
-  kezdes: ["Most", "A mai nap", "Ebben a pillanatban", "Érdemes figyelni", "Nyisd ki a szemed", "Lélegezz mélyen"],
+  kezdes: [
+    "Most", "A mai nap", "Ebben a pillanatban", "Érdemes figyelni", "Nyisd ki a szemed",
+    "Lélegezz mélyen", "Érezd a csendet", "Engedd be a fényt", "Kapcsolódj a jelenhez", "Merülj el a nyugalomban"
+  ],
   kozep: [
-    "minden a helyére kerül",
-    "az élet támogat téged",
-    "pont ott vagy, ahol lenned kell",
-    "a dolgok a maguk útján haladnak",
-    "minden érted történik",
-    "a jelen pillanatban van minden válasz"
+    "minden a helyére kerül", "az élet támogat téged", "pont ott vagy, ahol lenned kell",
+    "a dolgok a maguk útján haladnak", "minden érted történik", "a jelen pillanatban van minden válasz",
+    "az univerzum útmutat", "a belső béke vezet", "a csend erőt ad", "az energia áramlik"
   ],
   vege: [
-    "csak engedd el az ellenállást ✨",
-    "és figyelj befelé 🌿",
-    "ha bízol a folyamatban 🌊",
-    "és megengeded magadnak 🧘",
-    "hagyd, hogy a nyugalom vezéreljen 🕊",
-    "engedj teret a békének 🌸"
+    "csak engedd el az ellenállást ✨", "és figyelj befelé 🌿", "ha bízol a folyamatban 🌊",
+    "és megengeded magadnak 🧘", "hagyd, hogy a nyugalom vezéreljen 🕊", "engedj teret a békének 🌸",
+    "hagyd, hogy a szíved vezessen 💛", "engedd, hogy a lélek nyugodjon", "érezd a harmóniát 🌼", "lásd a szépséget mindenben"
   ]
 };
 
-// ===== vicces =====
 const vicces = {
-  kezdes: ["Ma", "Fontos hír", "A mai terv", "Figyelem!", "Ne feledd", "Breaking News"],
+  kezdes: [
+    "Ma", "Fontos hír", "A mai terv", "Figyelem!", "Ne feledd", "Breaking News",
+    "Érdekes tény", "Vicces tipp", "Szuperhír", "Napi kihívás"
+  ],
   kozep: [
-    "túlélni a napot",
-    "nem feladni 10 előtt",
-    "legalább egyszer ne hibázni",
-    "nem stresszelni túl",
-    "kávéval a kezünkben uralni a világot",
-    "a nap végére túlélni 😂"
+    "túlélni a napot", "nem feladni 10 előtt", "legalább egyszer ne hibázni", "nem stresszelni túl",
+    "kávéval a kezünkben uralni a világot", "a nap végére túlélni 😂", "elkerülni a baki-katasztrófát",
+    "nevetni egy jót ma", "meglepni magad egy mosollyal", "élvezni minden pillanatot"
   ],
   vege: [
-    "(de nem ígérünk semmit 😄)",
-    "az már bónusz 😂",
-    "ha sikerül, ünneplünk 🍕",
-    "ha nem, holnap újra próbáljuk 🤷‍♂️",
-    "vigyázz a nevetéssel 😆",
-    "és ne feledd, a macskák mindig nyernek 🐱"
+    "(de nem ígérünk semmit 😄)", "az már bónusz 😂", "ha sikerül, ünneplünk 🍕",
+    "ha nem, holnap újra próbáljuk 🤷‍♂️", "vigyázz a nevetéssel 😆", "és ne feledd, a macskák mindig nyernek 🐱",
+    "ha elrontod, ne aggódj 😜", "mosolyogj legalább egyszer ma 😊", "nevess, még ha kínosan is 😅", "a humor gyógyít minden sebet"
   ]
 };
 
-// ===== generátor =====
+// ===== GENERÁTOR =====
 function generate(category) {
   return pick(category.kezdes) + " " + pick(category.kozep,1) + " " + pick(category.vege,2);
 }
 
-// ===== napi stílus választás =====
+// ===== NAPI STÍLUS =====
 const categories = [
   { name: "Motiváció", fn: () => generate(motivacios) },
   { name: "Spirituális", fn: () => generate(spiritualis) },
@@ -95,4 +154,20 @@ const categories = [
 let dailyIndex = Math.abs(hashCode(baseSeed)) % categories.length;
 let current = categories[dailyIndex];
 
-document.getElementById("uzenet").innerText = current.fn();
+// ===== KIÍRÁS =====
+function megjelenit() {
+  document.getElementById("kategoria").innerText = current.name;
+  document.getElementById("uzenet").innerText = current.fn();
+}
+
+megjelenit();
+
+// ===== ÚJ ÜZENET GOMB =====
+function ujUzenet() {
+  baseSeed = baseSeed + Math.random();
+  megjelenit();
+}
+</script>
+
+</body>
+</html>

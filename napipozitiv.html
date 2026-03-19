@@ -1,0 +1,98 @@
+<div id="uzenet" style="font-size:26px; text-align:center; margin-top:60px;"></div>
+
+<script>
+// napi seed
+let baseSeed = new Date().toDateString();
+
+function hashCode(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return hash;
+}
+
+function pick(arr, seedOffset = 0) {
+  const h = hashCode(baseSeed + seedOffset);
+  return arr[Math.abs(h) % arr.length];
+}
+
+// ===== motivációs =====
+const motivacios = {
+  kezdes: ["Ma", "Ez a nap", "Most", "Ma végre", "Ne feledd", "Ezen a napon"],
+  kozep: [
+    "előre mozdít az utadon",
+    "erősebbé tesz",
+    "közelebb visz a célodhoz",
+    "segít kitartani",
+    "egy új lehetőség nyílik",
+    "megerősít a hitben"
+  ],
+  vege: [
+    "ha nem adod fel 💪",
+    "ha teszel érte 🔥",
+    "ha hiszel magadban 🙌",
+    "ha folytatod a munkát 🚀",
+    "ha bízik magadban ✨",
+    "ha nyitott maradsz 🏆"
+  ]
+};
+
+// ===== spirituális =====
+const spiritualis = {
+  kezdes: ["Most", "A mai nap", "Ebben a pillanatban", "Érdemes figyelni", "Nyisd ki a szemed", "Lélegezz mélyen"],
+  kozep: [
+    "minden a helyére kerül",
+    "az élet támogat téged",
+    "pont ott vagy, ahol lenned kell",
+    "a dolgok a maguk útján haladnak",
+    "minden érted történik",
+    "a jelen pillanatban van minden válasz"
+  ],
+  vege: [
+    "csak engedd el az ellenállást ✨",
+    "és figyelj befelé 🌿",
+    "ha bízol a folyamatban 🌊",
+    "és megengeded magadnak 🧘",
+    "hagyd, hogy a nyugalom vezéreljen 🕊",
+    "engedj teret a békének 🌸"
+  ]
+};
+
+// ===== vicces =====
+const vicces = {
+  kezdes: ["Ma", "Fontos hír", "A mai terv", "Figyelem!", "Ne feledd", "Breaking News"],
+  kozep: [
+    "túlélni a napot",
+    "nem feladni 10 előtt",
+    "legalább egyszer ne hibázni",
+    "nem stresszelni túl",
+    "kávéval a kezünkben uralni a világot",
+    "a nap végére túlélni 😂"
+  ],
+  vege: [
+    "(de nem ígérünk semmit 😄)",
+    "az már bónusz 😂",
+    "ha sikerül, ünneplünk 🍕",
+    "ha nem, holnap újra próbáljuk 🤷‍♂️",
+    "vigyázz a nevetéssel 😆",
+    "és ne feledd, a macskák mindig nyernek 🐱"
+  ]
+};
+
+// ===== generátor =====
+function generate(category) {
+  return pick(category.kezdes) + " " + pick(category.kozep,1) + " " + pick(category.vege,2);
+}
+
+// ===== napi stílus választás =====
+const categories = [
+  { name: "Motiváció", fn: () => generate(motivacios) },
+  { name: "Spirituális", fn: () => generate(spiritualis) },
+  { name: "Humor", fn: () => generate(vicces) }
+];
+
+let dailyIndex = Math.abs(hashCode(baseSeed)) % categories.length;
+let current = categories[dailyIndex];
+
+document.getElementById("uzenet").innerText = current.fn();

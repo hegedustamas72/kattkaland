@@ -6,13 +6,13 @@
   <title>Kattkaland</title>
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;700&family=Alex+Brush&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;700&display=swap" rel="stylesheet">
 
   <style>
     body {
       margin: 0;
       font-family: 'DM Sans', sans-serif;
-      background: linear-gradient(rgba(255,255,255,0.92), rgba(255,255,255,0.92)), url('wood-texture.png');
+      background: linear-gradient(rgba(255,255,255,0.92), rgba(255,255,255,0.92)), url('wood-texture.jpg');
       background-size: cover;
       background-position: center;
       display: flex;
@@ -26,22 +26,14 @@
       text-align: center;
       max-width: 420px;
       width: 90%;
-      padding: 25px;
-      background: rgba(255,255,255,0.88);
-      border-radius: 20px;
-      backdrop-filter: blur(6px);
+      padding: 40px 20px;
     }
 
     .logo {
       width: 160px;
-      margin-bottom: 10px;
-    }
-
-    h1 {
-      font-family: 'Alex Brush', cursive;
-      color: #9b6a6c;
-      font-size: 36px;
-      margin-bottom: 25px;
+      margin: 50px auto 20px auto;
+      display: block;
+      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.1));
     }
 
     .btn {
@@ -57,6 +49,7 @@
       font-weight: 700;
       color: white;
       transition: 0.25s ease;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.08);
     }
 
     .btn img {
@@ -77,8 +70,9 @@
     }
 
     .btn:hover {
-      transform: translateY(-3px) scale(1.01);
-      opacity: 0.95;
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.12);
+      opacity: 0.97;
     }
 
     .footer {
@@ -88,10 +82,6 @@
     }
 
     @media (max-width: 480px) {
-      h1 {
-        font-size: 30px;
-      }
-
       .btn {
         font-size: 16px;
         padding: 14px;
@@ -104,8 +94,6 @@
 
     <img src="logo.png" alt="Kattkaland logo" class="logo" />
 
-    <h1>Kattkaland</h1>
-
     <a href="https://facebook.com/kattkaland" class="btn btn-main" target="_blank">
       <img src="facebook-icon.png" alt="Facebook" />
       Facebook
@@ -116,15 +104,14 @@
       Weboldal
     </a>
 
-    <!-- Add to contacts -->
     <a href="nevjegy.vcf" class="btn btn-card">
-      <img src="contact-icon.jpg" alt="Kontakt" />
+      <img src="contact-icon.png" alt="Kontakt" />
       Névjegy
     </a>
 
-     <a href="napipozitiv.html" class="btn btn-secondary" target="_blank">
-      <img src="pozitiv.png" alt="Napi" />
-      Napi pozitív
+     <a href="hnapipozitiv.html" class="btn btn-secondary" target="_blank">
+      <img src="pozitiv.png" alt="Web" />
+      Weboldal
     </a>
 
     <div class="footer">
@@ -136,28 +123,5 @@
 </html>
 
 <!--
-=== FONTOS: ADD TO CONTACTS (.VCF) ===
-Ez a fájl automatikusan megnyílik mobilon és felajánlja a mentést.
-
-Hozd létre: nevjegy.vcf
-
-BEGIN:VCARD
-VERSION:3.0
-FN:Kattkaland
-ORG:Kattkaland
-URL:https://www.kattkaland.hu
-TEL:+3612345678
-EMAIL:info@kattkaland.hu
-END:VCARD
-
-=== SZÜKSÉGES FÁJLOK ===
-- logo.png
-- wood-texture.jpg
-- facebook-icon.png (letölthető pl. fehér FB ikon PNG)
-- brand-icon.png (a brandbook 'Ikonok' részből kivágva)
-- contact-icon.png (pl. egyszerű user/contact ikon)
-
-=== TIPP ===
-Ha iPhone-on nyitják meg → azonnal felugrik a "Kontakt hozzáadása"
-Androidon → letöltés után megnyitva ugyanígy működik
+VCF fájl változatlan
 -->

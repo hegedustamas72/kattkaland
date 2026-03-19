@@ -12,20 +12,15 @@
 body {
   margin: 0;
   font-family: 'DM Sans', sans-serif;
-
-  /* UGYANAZ a háttér mint a főoldalon */
   background: linear-gradient(rgba(255,255,255,0.92), rgba(255,255,255,0.92)), url('wood-texture.png');
   background-size: cover;
   background-position: center;
-
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #424b54;
 }
-
-/* KÁRTYA */
 .card {
   background: white;
   border-radius: 20px;
@@ -36,15 +31,11 @@ body {
   box-shadow: 0 10px 25px rgba(0,0,0,0.08);
   animation: fadeIn 0.8s ease;
 }
-
-/* CÍM */
 .title {
   font-family: 'Alex Brush', cursive;
   font-size: 40px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
-
-/* KATEGÓRIA */
 .tag {
   font-size: 12px;
   opacity: 0.6;
@@ -52,16 +43,12 @@ body {
   text-transform: uppercase;
   letter-spacing: 1px;
 }
-
-/* ÜZENET */
 .message {
   font-size: 22px;
   line-height: 1.4;
   margin: 20px 0;
   font-weight: 700;
 }
-
-/* GOMB */
 .btn {
   border: none;
   padding: 14px 20px;
@@ -74,16 +61,8 @@ body {
   box-shadow: 0 6px 14px rgba(0,0,0,0.08);
   transition: 0.25s ease;
 }
-
-.btn:hover {
-  transform: translateY(-3px) scale(1.02);
-}
-
-.btn:active {
-  transform: scale(0.96);
-}
-
-/* ANIMÁCIÓ */
+.btn:hover { transform: translateY(-3px) scale(1.02); }
+.btn:active { transform: scale(0.96); }
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px);}
   to { opacity: 1; transform: translateY(0);}
@@ -109,10 +88,25 @@ function hashCode(str) {
   }
   return hash;
 }
-
 function pick(arr, seed) {
   const h = hashCode(seed);
   return arr[Math.abs(h) % arr.length];
+}
+
+// ===== DEVICE AZONOSÍTÓ =====
+function getDeviceId() {
+  let id = localStorage.getItem("deviceId");
+  if (!id) {
+    id = Math.random().toString(36).substring(2) + Date.now();
+    localStorage.setItem("deviceId", id);
+  }
+  return id;
+}
+
+// ===== DÁTUM KULCS =====
+function getTodayKey() {
+  const d = new Date();
+  return d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate();
 }
 
 // ===== SZÖVEGEK =====
@@ -121,13 +115,11 @@ const motivacios = {
   kozep:["előre mozdít az utadon","erősebbé tesz","közelebb visz a célodhoz","segít kitartani","egy új lehetőség nyílik","megerősít a hitben","növeli az energiádat","hozzásegít a sikerhez","bátorít a változásra","megmutatja az erődet"],
   vege:["ha nem adod fel 💪","ha teszel érte 🔥","ha hiszel magadban 🙌","ha folytatod a munkát 🚀","ha bízik magadban ✨","ha nyitott maradsz 🏆","ha elindulsz ma is","ha kitartasz a célod mellett","ha megteszed az első lépést","ha hiszel a sikeredben"]
 };
-
 const spiritualis = {
   kezdes:["Most","A mai nap","Ebben a pillanatban","Érdemes figyelni","Nyisd ki a szemed","Lélegezz mélyen","Érezd a csendet","Engedd be a fényt","Kapcsolódj a jelenhez","Merülj el a nyugalomban"],
   kozep:["minden a helyére kerül","az élet támogat téged","pont ott vagy, ahol lenned kell","a dolgok a maguk útján haladnak","minden érted történik","a jelen pillanatban van minden válasz","az univerzum útmutat","a belső béke vezet","a csend erőt ad","az energia áramlik"],
   vege:["csak engedd el az ellenállást ✨","és figyelj befelé 🌿","ha bízol a folyamatban 🌊","és megengeded magadnak 🧘","hagyd, hogy a nyugalom vezéreljen 🕊","engedj teret a békének 🌸","hagyd, hogy a szíved vezessen 💛","engedd, hogy a lélek nyugodjon","érezd a harmóniát 🌼","lásd a szépséget mindenben"]
 };
-
 const vicces = {
   kezdes:["Ma","Fontos hír","A mai terv","Figyelem!","Ne feledd","Breaking News","Érdekes tény","Vicces tipp","Szuperhír","Napi kihívás"],
   kozep:["túlélni a napot","nem feladni 10 előtt","legalább egyszer ne hibázni","nem stresszelni túl","kávéval a kezünkben uralni a világot","a nap végére túlélni 😂","elkerülni a baki-katasztrófát","nevetni egy jót ma","meglepni magad egy mosollyal","élvezni minden pillanatot"],
@@ -141,17 +133,10 @@ const categories = [
   { name: "Humor", data: vicces }
 ];
 
-// ===== DÁTUM KULCS =====
-function getTodayKey() {
-  const d = new Date();
-  return d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate();
-}
-
-// ===== GENERÁLÁS =====
+// ===== GENERÁLÁS KIEGYENSÚLYOZOTTAN =====
 function generateMessage(seed) {
-  const catIndex = Math.abs(hashCode(seed)) % categories.length;
+  const catIndex = (Math.abs(hashCode(seed)) + new Date().getDate()) % categories.length;
   const category = categories[catIndex];
-
   return {
     category: category.name,
     text:
@@ -163,14 +148,15 @@ function generateMessage(seed) {
 
 // ===== BETÖLTÉS =====
 function loadMessage() {
-  const key = getTodayKey();
-  let saved = localStorage.getItem(key);
-
+  const dateKey = getTodayKey();
+  const deviceId = getDeviceId();
+  const storageKey = dateKey + "_" + deviceId;
+  let saved = localStorage.getItem(storageKey);
   if (saved) {
     return JSON.parse(saved);
   } else {
-    const msg = generateMessage(key);
-    localStorage.setItem(key, JSON.stringify(msg));
+    const msg = generateMessage(dateKey + deviceId);
+    localStorage.setItem(storageKey, JSON.stringify(msg));
     return msg;
   }
 }
@@ -181,12 +167,11 @@ function megjelenit() {
   document.getElementById("kategoria").innerText = msg.category;
   document.getElementById("uzenet").innerText = msg.text;
 }
-
 megjelenit();
 
 // ===== GOMB =====
 function ujUzenet() {
-  alert("Naponta egy üzenet érhető el 😊");
+  alert("Naponta egy üzenet érhető el 😊\nBeszéld meg másokkal, nekik mi jutott 😄");
 }
 </script>
 
